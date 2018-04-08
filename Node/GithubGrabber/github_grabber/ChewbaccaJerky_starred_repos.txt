@@ -1,0 +1,4 @@
+Repo: hiring-without-whiteboards. Stars: 8022.
+Repo: electron. Stars: 58627.
+Repo: 30-seconds-of-code. Stars: 19473.
+Repo: Immerse. Stars: 4.
