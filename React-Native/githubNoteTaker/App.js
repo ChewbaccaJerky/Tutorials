@@ -1,23 +1,27 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Main from "./App/Components/Main";
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
-}
+import React from 'react';
+import { StyleSheet, Text, View, NavigatorIOS } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'red',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <NavigatorIOS 
+        style={styles.container}
+        initialRoute = {{
+          title: "Github Note Taker",
+          component: "Main"
+        }}
+      />
+    );
+  }
+}
