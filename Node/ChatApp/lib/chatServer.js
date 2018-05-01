@@ -1,12 +1,16 @@
 const io = require("socket.io");
 const PORT = 3000;
 
+let chat;
+
 const chatServer = {
     listen(server){
-        const chat = io(server);
+        
+        chat = io(server);
 
         chat.on('connection', (socket)=>{
-            console.log("connected!");
+            // socket.emit('connected', "Connected!!!");
+            // console.log(socket);
         });
     },
 };
