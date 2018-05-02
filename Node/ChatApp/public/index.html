@@ -9,20 +9,28 @@
 </head>
 <body>
 
-    <div class="rooms">
-        <h3>Available Rooms</h3>
-        <ul class="room-list">
-        </ul>
-    </div>
+    <main>
+        <section class="room-list">
+            <h3 id="room" class="active-room"></h3>
+            <h3 class="room-list-header">Active Rooms</h3>
+            <ul id="rooms"></ul>
+        </section>
+
+        <section class="message-list">
+            <div>
+                <h3>Messages</h3>
+                <ul id="messages"></ul>
+            </div>
+            <form>
+                <input id="input" type="text" placeholder="Enter text....">
+                <button type="submit">SEND</button>
+            </form>
+        </section>
+    </main>
+
     
     <div class="messages-box">
-        <ul id="messages">
-            <li>Messages here:</li>
-        </ul>
-        <form>
-            <input id="input" type="text" placeholder="Enter text....">
-            <button type="submit">SEND</button>
-        </form>
+        
     </div>
 
     

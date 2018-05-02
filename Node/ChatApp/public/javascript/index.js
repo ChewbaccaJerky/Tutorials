@@ -25,10 +25,16 @@ document.addEventListener("DOMContentLoaded", ()=>{
         myChatUI.processUserInput();
     });
 
+
+    // Listen to when temp name is assigned
+    socket.on("assignedTempName", data=>{
+        myChatUI.addMsg(data);
+    });
+
     // Listen when name is attempted to change
     socket.on("nameResult", data=>{
         if(data.success) {
-            myChatUI.addMsg(`>: new nickname is ${data.name}`);
+            myChatUI.addMsg(`new nickname is ${data.name}`);
         }
         else {
             myChatUI.addMsg(data.message);

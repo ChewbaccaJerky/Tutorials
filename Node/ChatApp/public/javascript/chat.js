@@ -4,8 +4,8 @@ function Chat(socket) {
     this.nickname = "";
 }
 
-Chat.prototype.sendMessage = function(message) {
-    this.socket.emit('message', {message: message});
+Chat.prototype.sendMessage = function(message, room) {
+    this.socket.emit('message', {message: message, room});
 };
 
 Chat.prototype.processCommand = function(command) {

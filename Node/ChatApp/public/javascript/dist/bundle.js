@@ -7816,8 +7816,8 @@ function Chat(socket) {
     this.nickname = "";
 }
 
-Chat.prototype.sendMessage = function(message) {
-    this.socket.emit('message', {message: message});
+Chat.prototype.sendMessage = function(message, room) {
+    this.socket.emit('message', {message: message, room});
 };
 
 Chat.prototype.processCommand = function(command) {
@@ -7935,10 +7935,16 @@ document.addEventListener("DOMContentLoaded", ()=>{
         myChatUI.processUserInput();
     });
 
+
+    // Listen to when temp name is assigned
+    socket.on("assignedTempName", data=>{
+        myChatUI.addMsg(data);
+    });
+
     // Listen when name is attempted to change
     socket.on("nameResult", data=>{
         if(data.success) {
-            myChatUI.addMsg(`>: new nickname is ${data.name}`);
+            myChatUI.addMsg(`new nickname is ${data.name}`);
         }
         else {
             myChatUI.addMsg(data.message);

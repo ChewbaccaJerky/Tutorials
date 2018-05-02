@@ -2,11 +2,21 @@ const io = require("socket.io");
 const PORT = 3000;
 
 let chat;
-let guestNum = 1;
+let guestNum = 0;
 const nicknames = {};
+const currentRoom = {};
 let namesUsed = [];
 
+
 const chatServer = {
+    joinRoom(socket, room="Lobby"){
+        socket.join(room);
+        currentRoom[socket.id] = room;
+    },
+    handleChangeRoom(socket, room){
+        socket.leave(currentRoom[socket.id]);
+        socket.join(room);
+    },
     assignTempGuestName(socket){
         const tempName = `guest_${guestNum}`;
         nicknames[socket.id] = tempName;
@@ -29,8 +39,8 @@ const chatServer = {
                     const prevName = nicknames[socket.id];
                     const prevIdxName = namesUsed.indexOf(prevName);
 
-                    // remove name from nicknames and namesUsed
-                    delete nicknames[socket.id];
+                    // change nickname
+                    nicknames[socket.id] = name;
                     
                     socket.emit("nameResult", 
                         {
@@ -49,12 +59,13 @@ const chatServer = {
 
         chat.on('connection', (socket)=>{
             socket.emit('connected', "Connected!!!");
+            guestNum += 1;
             this.assignTempGuestName(socket);
             this.handleNicknameChangeRequest(socket);
 
             socket.on('message', data=>{
                 // emit message to everyone
-                socket.broadcast.emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
+                socket.to(currentRoom[socket.id]).emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
             });
 
             socket.on("disconnect", ()=>{
