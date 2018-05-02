@@ -23,6 +23,6 @@ ChatUI.prototype.addMsg = function() {
     this.msgList.appendChild(el);
 };
 
-
+module.exports = ChatUI;
 
 

@@ -7803,27 +7803,106 @@ module.exports = yeast;
 
 /***/ }),
 
+/***/ "./public/javascript/chat.js":
+/*!***********************************!*\
+  !*** ./public/javascript/chat.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+function Chat(socket) {
+    this.socket = socket;
+}
+
+Chat.prototype.sendMessage = function(message) {
+    this.socket.emit('message', {message: message});
+};
+
+Chat.prototype.processCommand = function(command) {
+    // parse command
+    const words = command.split(" ");
+    let parseCMD = "";
+    if(words[0].includes("/")){
+        parseCMD = words[0].splice(1);
+    }
+    
+    switch(parseCMD) {
+        case "nick":
+            this.socket.emit("nameAttempt", words[2]);
+            this.socket.on("nameResult", data=>{
+                if(data.success){
+                    // change UI nickname
+                    
+                }
+                else {
+                    // send error
+                }
+            });
+            break;
+        default:
+            break;
+    }
+};
+
+module.exports = Chat;
+
+/***/ }),
+
+/***/ "./public/javascript/chatUI.js":
+/*!*************************************!*\
+  !*** ./public/javascript/chatUI.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Chat = __webpack_require__(/*! ./chat */ "./public/javascript/chat.js");
+
+function ChatUI(socket){
+    this.chat = new Chat(socket);
+    this.input = document.getElementsByTagName('input')[0];
+    this.msgList = document.getElementById('messages');
+}
+
+// getInput
+ChatUI.prototype.getInput = function(){
+    return this.input.value;
+};
+
+// sendMsg
+ChatUI.prototype.sendMsg = function(){
+    this.chat.sendMsg(this.getInput());
+};
+
+// addMsg
+ChatUI.prototype.addMsg = function() {
+    const el = document.createElement('li');
+    el.innerText = `<li>${this.getInput()}</li>`;
+    this.msgList.appendChild(el);
+};
+
+module.exports = ChatUI;
+
+
+
+
+/***/ }),
+
 /***/ "./public/javascript/index.js":
 /*!************************************!*\
   !*** ./public/javascript/index.js ***!
   \************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
-/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_0__);
+const io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 
 
 // console.dir(io);
 
-var socket = socket_io_client__WEBPACK_IMPORTED_MODULE_0___default.a.connect('http://localhost:8000');
-
-socket.on('connected', (data) => {
-    console.log(data);
-});
-
+const socket = io.connect('http://localhost:8000');
+const chat = new __webpack_require__(/*! ./chat */ "./public/javascript/chat.js")(socket);
+const chatUI = new __webpack_require__(/*! ./chatUI */ "./public/javascript/chatUI.js")(socket);
 
 
 /***/ }),
