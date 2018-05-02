@@ -7833,10 +7833,11 @@ Chat.prototype.processCommand = function(command) {
             this.socket.on("nameResult", data=>{
                 if(data.success){
                     // change UI nickname
-                    
+                    console.log(data);
                 }
                 else {
                     // send error
+                    console.log(data);
                 }
             });
             break;
@@ -7871,25 +7872,29 @@ ChatUI.prototype.getInput = function(){
 
 // sendMsg
 ChatUI.prototype.sendMsg = function(){
-    this.chat.sendMsg(this.getInput());
+    this.chat.sendMessage(this.getInput());
 };
 
 // addMsg
 ChatUI.prototype.addMsg = function() {
     const el = document.createElement('li');
-    el.innerText = `<li>${this.getInput()}</li>`;
+    el.innerText = `${this.getInput()}`;
     this.msgList.appendChild(el);
 };
 
+// processUserInput
 ChatUI.prototype.processUserInput = function(){
     const input = this.getInput();
+    
     // checks if input starts with '/'<input>
-    if(input.match(/^\/w+/).length > 0) {
+    if(input.match(/^\/w+/)) {
         this.chat.processCommand(input);
     }
     else {
         this.sendMsg();
         this.addMsg();
+        this.input.value = "";
+        this.input.focus();
     }
 };
 
@@ -7913,9 +7918,23 @@ const io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io
 // console.dir(io);
 
 const socket = io.connect('http://localhost:8000');
-const chat = new __webpack_require__(/*! ./chat */ "./public/javascript/chat.js")(socket);
-const chatUI = new __webpack_require__(/*! ./chatUI */ "./public/javascript/chatUI.js")(socket);
+const Chat = new __webpack_require__(/*! ./chat */ "./public/javascript/chat.js");
+const ChatUI = new __webpack_require__(/*! ./chatUI */ "./public/javascript/chatUI.js");
 
+// When all elements are loaded
+document.addEventListener("DOMContentLoaded", ()=>{
+    const myChat = new Chat(socket);
+    const myChatUI = new ChatUI(socket);
+    window.myChat = myChat;
+    window.myChatUI = myChatUI;
+    
+    // Add Event Listeners
+    const button = document.getElementsByTagName("button")[0];
+    button.addEventListener("click", e => {
+        e.preventDefault();
+        myChatUI.processUserInput();
+    });
+});
 
 /***/ }),
 

@@ -13,25 +13,29 @@ ChatUI.prototype.getInput = function(){
 
 // sendMsg
 ChatUI.prototype.sendMsg = function(){
-    this.chat.sendMsg(this.getInput());
+    this.chat.sendMessage(this.getInput());
 };
 
 // addMsg
 ChatUI.prototype.addMsg = function() {
     const el = document.createElement('li');
-    el.innerText = `<li>${this.getInput()}</li>`;
+    el.innerText = `${this.getInput()}`;
     this.msgList.appendChild(el);
 };
 
+// processUserInput
 ChatUI.prototype.processUserInput = function(){
     const input = this.getInput();
+    
     // checks if input starts with '/'<input>
-    if(input.match(/^\/w+/).length > 0) {
+    if(input.match(/^\/w+/)) {
         this.chat.processCommand(input);
     }
     else {
         this.sendMsg();
         this.addMsg();
+        this.input.value = "";
+        this.input.focus();
     }
 };
 

@@ -21,10 +21,11 @@ Chat.prototype.processCommand = function(command) {
             this.socket.on("nameResult", data=>{
                 if(data.success){
                     // change UI nickname
-                    
+                    console.log(data);
                 }
                 else {
                     // send error
+                    console.log(data);
                 }
             });
             break;

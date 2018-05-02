@@ -4,7 +4,7 @@ const PORT = 3000;
 let chat;
 let guestNum = 1;
 const nicknames = {};
-const namesUsed = [];
+let namesUsed = [];
 
 const chatServer = {
     assignTempGuestName(socket){
@@ -57,7 +57,7 @@ const chatServer = {
                 const prevIdx = namesUsed.indexOf(prevName);
 
                 delete nicknames[socket.id];
-                namesUsed = namesUsed.splice(0, prevIdx-1).concat(namesUsed.split(prevIdx+1));
+                namesUsed = namesUsed.splice(0, prevIdx-1).concat(namesUsed.splice(prevIdx+1));
             });
         });
     },
