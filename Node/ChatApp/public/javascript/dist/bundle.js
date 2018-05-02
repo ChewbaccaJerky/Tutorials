@@ -7813,6 +7813,7 @@ module.exports = yeast;
 
 function Chat(socket) {
     this.socket = socket;
+    this.nickname = "";
 }
 
 Chat.prototype.sendMessage = function(message) {
@@ -7823,27 +7824,21 @@ Chat.prototype.processCommand = function(command) {
     // parse command
     const words = command.split(" ");
     let parseCMD = "";
-    if(words[0].includes("/")){
-        parseCMD = words[0].splice(1);
+    if(words[0].match(/^\/\w+/).length > 0){
+        parseCMD = words[0].substring(1);
     }
     
+    let msg = false;
     switch(parseCMD) {
         case "nick":
-            this.socket.emit("nameAttempt", words[2]);
-            this.socket.on("nameResult", data=>{
-                if(data.success){
-                    // change UI nickname
-                    console.log(data);
-                }
-                else {
-                    // send error
-                    console.log(data);
-                }
-            });
+            words.shift();
+            this.socket.emit("nameAttempt", words.join(" "));
             break;
         default:
-            break;
+            msg = "Unrecognized command!";
     }
+
+    return msg;
 };
 
 module.exports = Chat;
@@ -7876,31 +7871,32 @@ ChatUI.prototype.sendMsg = function(){
 };
 
 // addMsg
-ChatUI.prototype.addMsg = function() {
+ChatUI.prototype.addMsg = function(msg) {
     const el = document.createElement('li');
-    el.innerText = `${this.getInput()}`;
+    el.innerText = `${msg}`;
     this.msgList.appendChild(el);
 };
 
 // processUserInput
 ChatUI.prototype.processUserInput = function(){
     const input = this.getInput();
-    
+    let response;
+
     // checks if input starts with '/'<input>
-    if(input.match(/^\/w+/)) {
-        this.chat.processCommand(input);
+    if(input[0] === "/") {
+        response = this.chat.processCommand(input);
+        if(response) this.addMsg(response);
     }
     else {
         this.sendMsg();
-        this.addMsg();
-        this.input.value = "";
-        this.input.focus();
+        this.addMsg(input);
     }
+
+    this.input.value = "";
+    this.input.focus();
 };
 
 module.exports = ChatUI;
-
-
 
 
 /***/ }),
@@ -7925,6 +7921,8 @@ const ChatUI = new __webpack_require__(/*! ./chatUI */ "./public/javascript/chat
 document.addEventListener("DOMContentLoaded", ()=>{
     const myChat = new Chat(socket);
     const myChatUI = new ChatUI(socket);
+    
+    // TODO: for testing only
     window.myChat = myChat;
     window.myChatUI = myChatUI;
     
@@ -7933,6 +7931,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
     button.addEventListener("click", e => {
         e.preventDefault();
         myChatUI.processUserInput();
+    });
+
+    socket.on("nameResult", data=>{
+        if(data.success) {
+            myChatUI.addMsg(`>: new nickname is ${data.name}`);
+        }
+        else {
+            myChatUI.addMsg(data.message);
+        }
     });
 });
 

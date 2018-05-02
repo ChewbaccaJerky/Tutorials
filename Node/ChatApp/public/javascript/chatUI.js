@@ -17,28 +17,29 @@ ChatUI.prototype.sendMsg = function(){
 };
 
 // addMsg
-ChatUI.prototype.addMsg = function() {
+ChatUI.prototype.addMsg = function(msg) {
     const el = document.createElement('li');
-    el.innerText = `${this.getInput()}`;
+    el.innerText = `${msg}`;
     this.msgList.appendChild(el);
 };
 
 // processUserInput
 ChatUI.prototype.processUserInput = function(){
     const input = this.getInput();
-    
+    let response;
+
     // checks if input starts with '/'<input>
-    if(input.match(/^\/w+/)) {
-        this.chat.processCommand(input);
+    if(input[0] === "/") {
+        response = this.chat.processCommand(input);
+        if(response) this.addMsg(response);
     }
     else {
         this.sendMsg();
-        this.addMsg();
-        this.input.value = "";
-        this.input.focus();
+        this.addMsg(input);
     }
+
+    this.input.value = "";
+    this.input.focus();
 };
 
 module.exports = ChatUI;
-
-
