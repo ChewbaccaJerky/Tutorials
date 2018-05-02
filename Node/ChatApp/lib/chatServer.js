@@ -13,9 +13,11 @@ const chatServer = {
         socket.join(room);
         currentRoom[socket.id] = room;
     },
-    handleChangeRoom(socket, room){
-        socket.leave(currentRoom[socket.id]);
-        socket.join(room);
+    handleChangeRoom(socket){
+        socket.on('join', room => {
+            socket.leave(currentRoom[socket.id]);
+            socket.join(room);
+        });
     },
     assignTempGuestName(socket){
         const tempName = `guest_${guestNum}`;
@@ -25,7 +27,6 @@ const chatServer = {
     },
     handleNicknameChangeRequest(socket) {
         socket.on("nameAttempt", (name) => {
-            console.log("nameAttempt");
             // if name starts with guest return false
             if(name.toLowerCase().startsWith("guest")){
                 socket.emit("nameResult", 
@@ -57,18 +58,20 @@ const chatServer = {
         
         chat = io(server);
 
-        chat.on('connection', (socket)=>{
+        chat.on('connection', (socket) => {
             socket.emit('connected', "Connected!!!");
             guestNum += 1;
             this.assignTempGuestName(socket);
             this.handleNicknameChangeRequest(socket);
+            this.handleChangeRoom(socket);
+            this.joinRoom(socket);
 
-            socket.on('message', data=>{
+            socket.on('message', data => {
                 // emit message to everyone
                 socket.to(currentRoom[socket.id]).emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
             });
-
-            socket.on("disconnect", ()=>{
+            
+            socket.on("disconnecting", () => {
                 const prevName = nicknames[socket.id];
                 const prevIdx = namesUsed.indexOf(prevName);
 

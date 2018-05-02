@@ -45,4 +45,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     socket.on("addMessage", data=>{
         myChatUI.addMsg(data.message);
     });
+
+    
 });

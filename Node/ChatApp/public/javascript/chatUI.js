@@ -4,6 +4,8 @@ function ChatUI(socket){
     this.chat = new Chat(socket);
     this.input = document.getElementsByTagName('input')[0];
     this.msgList = document.getElementById('messages');
+    this.roomList = document.getElementById('rooms');
+    this.room = document.getElementById('room');
 }
 
 // getInput
@@ -13,7 +15,7 @@ ChatUI.prototype.getInput = function(){
 
 // sendMsg
 ChatUI.prototype.sendMsg = function(){
-    this.chat.sendMessage(this.getInput());
+    this.chat.sendMessage(this.getInput(), this.room.textContent);
 };
 
 // addMsg
