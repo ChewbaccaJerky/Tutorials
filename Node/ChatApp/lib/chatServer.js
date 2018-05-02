@@ -52,6 +52,11 @@ const chatServer = {
             this.assignTempGuestName(socket);
             this.handleNicknameChangeRequest(socket);
 
+            socket.on('message', data=>{
+                // emit message to everyone
+                socket.broadcast.emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
+            });
+
             socket.on("disconnect", ()=>{
                 const prevName = nicknames[socket.id];
                 const prevIdx = namesUsed.indexOf(prevName);

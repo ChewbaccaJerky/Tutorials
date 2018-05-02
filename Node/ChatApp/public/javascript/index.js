@@ -17,12 +17,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
     window.myChatUI = myChatUI;
     
     // Add Event Listeners
+
+    // Listen to when a input is submitted
     const button = document.getElementsByTagName("button")[0];
     button.addEventListener("click", e => {
         e.preventDefault();
         myChatUI.processUserInput();
     });
 
+    // Listen when name is attempted to change
     socket.on("nameResult", data=>{
         if(data.success) {
             myChatUI.addMsg(`>: new nickname is ${data.name}`);
@@ -30,5 +33,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
         else {
             myChatUI.addMsg(data.message);
         }
+    });
+
+    // Listen when message is sent back
+    socket.on("addMessage", data=>{
+        myChatUI.addMsg(data.message);
     });
 });
