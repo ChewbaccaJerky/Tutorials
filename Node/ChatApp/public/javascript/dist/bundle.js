@@ -7881,6 +7881,18 @@ ChatUI.prototype.addMsg = function() {
     this.msgList.appendChild(el);
 };
 
+ChatUI.prototype.processUserInput = function(){
+    const input = this.getInput();
+    // checks if input starts with '/'<input>
+    if(input.match(/^\/w+/).length > 0) {
+        this.chat.processCommand(input);
+    }
+    else {
+        this.sendMsg();
+        this.addMsg();
+    }
+};
+
 module.exports = ChatUI;
 
 
