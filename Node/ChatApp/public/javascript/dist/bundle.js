@@ -7817,6 +7817,7 @@ function Chat(socket) {
 }
 
 Chat.prototype.sendMessage = function(message, room) {
+    
     this.socket.emit('message', {message: message, room});
 };
 
@@ -7950,11 +7951,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     // Listen when name is attempted to change
     socket.on("nameResult", data=>{
+        
         if(data.success) {
-            myChatUI.addMsg(`new nickname is ${data.name}`);
+            const msg = `new nickname is ${data.name}`;
+            socket.emit('message', {message: msg});
         }
         else {
-            myChatUI.addMsg(data.message);
+            myChatUI.sendMsg(data.message);
         }
     });
 

@@ -60,7 +60,13 @@ const chatServer = {
 
         chat.on('connection', (socket) => {
             socket.emit('connected', "Connected!!!");
-            guestNum += 1;
+            
+            chat.clients((err, clients) => {
+                if(err) return;
+
+                guestNum = clients.indexOf(socket.id);
+            });
+
             this.assignTempGuestName(socket);
             this.handleNicknameChangeRequest(socket);
             this.handleChangeRoom(socket);

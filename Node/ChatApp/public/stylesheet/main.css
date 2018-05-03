@@ -21,6 +21,10 @@ section {
     width: 20vw;
 }
 
+#messages {
+    overflow-y: scroll;
+}
+
 .message-list{
     height: 80%;
     width: 50%;
