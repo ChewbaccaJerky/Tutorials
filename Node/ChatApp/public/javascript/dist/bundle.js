@@ -7952,11 +7952,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     // Listen when name is attempted to change
     socket.on("nameResult", data=>{
-        
         if(data.success) {
             const msg = `${data.prevName} new nickname is ${data.name}`;
-            socket.emit('message', {message: msg});
-            myChatUI.sendMsg(msg);
+            myChatUI.addMsg(msg);
         }
         else {
             myChatUI.sendMsg(data.message);

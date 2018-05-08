@@ -39,10 +39,11 @@ const chatServer = {
         socket.on("nameAttempt", (name) => {
             // if name starts with guest return false
             const room = currentRoom[socket.id];
-            if(name.toLowerCase().startsWith("guest")){
+            if(name.toLowerCase().startsWith("guest")){ 
                 socket.to(room).emit("nameResult", 
-                    { success: false,
-                      message: "Names cannot start with 'guest'"
+                    { 
+                        success: false,
+                        message: "Names cannot start with 'guest'"
                     });
             }
             else {
@@ -50,13 +51,14 @@ const chatServer = {
                 if(!namesUsed.includes(name)) {
                     const prevName = nicknames[socket.id];
                     const prevIdxName = namesUsed.indexOf(prevName);
-
+                    
                     // change nickname
+                    delete nicknames[socket.id];
                     nicknames[socket.id] = name;
                     namesUsed.push(name);
 
                     // remove old nickname from names used and nicknames
-                    const idx = namesUsed.indexOf("prevName");
+                    const idx = namesUsed.indexOf(prevName);
                     namesUsed = namesUsed.splice(0, idx - 1).concat(namesUsed.splice(idx+1));
 
                     socket.to(room).emit("nameResult", 
@@ -76,7 +78,7 @@ const chatServer = {
 
         chat.on('connection', (socket) => {
             socket.emit('connected', "Connected!!!");
-            
+
             guestNum++;
 
             this.assignTempGuestName(socket);
@@ -84,10 +86,9 @@ const chatServer = {
             this.handleChangeRoom(socket);
             this.joinRoom(socket);
 
-            socket.on('message', ({message}) => {
-                // emit message to  everyone
+            socket.on('message', (data) => {
                 const room = currentRoom[socket.id];
-                socket.to(room).emit('addMessage', {message: `${nicknames[socket.id]}: ${message}`});
+                socket.to(room).emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
             });
             
             socket.on("disconnecting", () => {
