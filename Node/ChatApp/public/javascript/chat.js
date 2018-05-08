@@ -5,7 +5,6 @@ function Chat(socket) {
 }
 
 Chat.prototype.sendMessage = function(message, room) {
-    
     this.socket.emit('message', {message: message, room});
 };
 
@@ -18,6 +17,7 @@ Chat.prototype.processCommand = function(command) {
     }
     
     let msg = false;
+
     switch(parseCMD) {
         case "nick":
             words.shift();

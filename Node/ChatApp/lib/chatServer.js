@@ -13,23 +13,34 @@ const chatServer = {
         socket.join(room);
         currentRoom[socket.id] = room;
     },
+    leaveRoom(socket){
+        const room = currentRoom[socket.id];
+        socket.to(room).emit('addMessage', {message: `${nicknames[socket.id]} has left`});
+        socket.leave(room);
+        delete currentRoom[socket.id];
+    },
     handleChangeRoom(socket){
         socket.on('join', room => {
             socket.leave(currentRoom[socket.id]);
             socket.join(room);
+        });
+
+        socket.to(currentRoom[socket.id]).emit('addMessage', {
+            message: ` has joined ${currentRoom[socket.id]}`
         });
     },
     assignTempGuestName(socket){
         const tempName = `guest_${guestNum}`;
         nicknames[socket.id] = tempName;
         namesUsed.push(tempName);
-        socket.emit("assignedTempName", `Name has been assigned to ${tempName}`);
+        socket.emit("assignedTempName", `You have been assigned to ${tempName}`);
     },
     handleNicknameChangeRequest(socket) {
         socket.on("nameAttempt", (name) => {
             // if name starts with guest return false
+            const room = currentRoom[socket.id];
             if(name.toLowerCase().startsWith("guest")){
-                socket.emit("nameResult", 
+                socket.to(room).emit("nameResult", 
                     { success: false,
                       message: "Names cannot start with 'guest'"
                     });
@@ -42,14 +53,19 @@ const chatServer = {
 
                     // change nickname
                     nicknames[socket.id] = name;
-                    
-                    socket.emit("nameResult", 
+                    namesUsed.push(name);
+
+                    // remove old nickname from names used and nicknames
+                    const idx = namesUsed.indexOf("prevName");
+                    namesUsed = namesUsed.splice(0, idx - 1).concat(namesUsed.splice(idx+1));
+
+                    socket.to(room).emit("nameResult", 
                         {
                             success: true,
-                            name
+                            name,
+                            prevName
                         });
                 }
-                // else name is in usedNames return false
             }
         });
     },
@@ -61,23 +77,22 @@ const chatServer = {
         chat.on('connection', (socket) => {
             socket.emit('connected', "Connected!!!");
             
-            chat.clients((err, clients) => {
-                if(err) return;
-
-                guestNum = clients.indexOf(socket.id);
-            });
+            guestNum++;
 
             this.assignTempGuestName(socket);
             this.handleNicknameChangeRequest(socket);
             this.handleChangeRoom(socket);
             this.joinRoom(socket);
 
-            socket.on('message', data => {
-                // emit message to everyone
-                socket.to(currentRoom[socket.id]).emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
+            socket.on('message', ({message}) => {
+                // emit message to  everyone
+                const room = currentRoom[socket.id];
+                socket.to(room).emit('addMessage', {message: `${nicknames[socket.id]}: ${message}`});
             });
             
             socket.on("disconnecting", () => {
+                this.leaveRoom(socket);
+
                 const prevName = nicknames[socket.id];
                 const prevIdx = namesUsed.indexOf(prevName);
 

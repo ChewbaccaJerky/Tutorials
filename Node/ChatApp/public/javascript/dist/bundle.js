@@ -7817,7 +7817,6 @@ function Chat(socket) {
 }
 
 Chat.prototype.sendMessage = function(message, room) {
-    
     this.socket.emit('message', {message: message, room});
 };
 
@@ -7830,6 +7829,7 @@ Chat.prototype.processCommand = function(command) {
     }
     
     let msg = false;
+
     switch(parseCMD) {
         case "nick":
             words.shift();
@@ -7888,6 +7888,7 @@ ChatUI.prototype.addMsg = function(msg) {
 // processUserInput
 ChatUI.prototype.processUserInput = function(){
     const input = this.getInput();
+    
     let response;
 
     // checks if input starts with '/'<input>
@@ -7953,8 +7954,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
     socket.on("nameResult", data=>{
         
         if(data.success) {
-            const msg = `new nickname is ${data.name}`;
+            const msg = `${data.prevName} new nickname is ${data.name}`;
             socket.emit('message', {message: msg});
+            myChatUI.sendMsg(msg);
         }
         else {
             myChatUI.sendMsg(data.message);

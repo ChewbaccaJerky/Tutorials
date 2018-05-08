@@ -28,6 +28,7 @@ ChatUI.prototype.addMsg = function(msg) {
 // processUserInput
 ChatUI.prototype.processUserInput = function(){
     const input = this.getInput();
+    
     let response;
 
     // checks if input starts with '/'<input>

@@ -35,8 +35,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
     socket.on("nameResult", data=>{
         
         if(data.success) {
-            const msg = `new nickname is ${data.name}`;
+            const msg = `${data.prevName} new nickname is ${data.name}`;
             socket.emit('message', {message: msg});
+            myChatUI.sendMsg(msg);
         }
         else {
             myChatUI.sendMsg(data.message);
