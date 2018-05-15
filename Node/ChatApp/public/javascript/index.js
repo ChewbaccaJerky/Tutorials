@@ -42,10 +42,18 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
     });
 
+    socket.on("roomResult", data => {
+        console.log(data.rooms);
+        myChatUI.showRooms(data.rooms);
+    });
+
     // Listen when message is sent back
     socket.on("addMessage", data=>{
         myChatUI.addMsg(data.message);
     });
 
     
+    setInterval(()=>{
+        socket.emit('rooms');
+    }, 1000);
 });

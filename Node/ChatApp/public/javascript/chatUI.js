@@ -8,6 +8,15 @@ function ChatUI(socket){
     this.room = document.getElementById('room');
 }
 
+ChatUI.prototype.showRooms = function(rooms) {
+    this.roomList.innerHTML = "";
+    for(let i = 0; i < rooms.length; i++) {
+        const li = document.createElement("li");
+        li.innerText = rooms[i];
+        this.roomList.appendChild(li);
+    }
+};
+
 // getInput
 ChatUI.prototype.getInput = function(){
     return this.input.value;

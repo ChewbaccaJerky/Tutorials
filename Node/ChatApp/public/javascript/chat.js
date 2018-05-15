@@ -16,6 +16,7 @@ Chat.prototype.processCommand = function(command) {
         parseCMD = words[0].substring(1);
     }
     
+    
     let msg = false;
 
     switch(parseCMD) {

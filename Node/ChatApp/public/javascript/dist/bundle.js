@@ -7828,6 +7828,7 @@ Chat.prototype.processCommand = function(command) {
         parseCMD = words[0].substring(1);
     }
     
+    
     let msg = false;
 
     switch(parseCMD) {
@@ -7867,6 +7868,15 @@ function ChatUI(socket){
     this.roomList = document.getElementById('rooms');
     this.room = document.getElementById('room');
 }
+
+ChatUI.prototype.showRooms = function(rooms) {
+    this.roomList.innerHTML = "";
+    for(let i = 0; i < rooms.length; i++) {
+        const li = document.createElement("li");
+        li.innerText = rooms[i];
+        this.roomList.appendChild(li);
+    }
+};
 
 // getInput
 ChatUI.prototype.getInput = function(){
@@ -7961,12 +7971,20 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
     });
 
+    socket.on("roomResult", data => {
+        console.log(data.rooms);
+        myChatUI.showRooms(data.rooms);
+    });
+
     // Listen when message is sent back
     socket.on("addMessage", data=>{
         myChatUI.addMsg(data.message);
     });
 
     
+    setInterval(()=>{
+        socket.emit('rooms');
+    }, 1000);
 });
 
 /***/ }),

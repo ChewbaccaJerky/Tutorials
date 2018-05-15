@@ -9,6 +9,17 @@ let namesUsed = [];
 
 
 const chatServer = {
+    getRooms(socket){
+        const rooms = {};
+
+        for (let room in currentRoom) {
+            rooms[currentRoom[room]] = 1;
+        }
+
+        const roomNames = Object.keys(rooms);
+
+        socket.emit("roomResult", { rooms: roomNames });
+    },
     joinRoom(socket, room="Lobby"){
         socket.join(room);
         currentRoom[socket.id] = room;
@@ -20,13 +31,11 @@ const chatServer = {
         delete currentRoom[socket.id];
     },
     handleChangeRoom(socket){
-        socket.on('join', room => {
-            socket.leave(currentRoom[socket.id]);
-            socket.join(room);
-        });
-
-        socket.to(currentRoom[socket.id]).emit('addMessage', {
-            message: ` has joined ${currentRoom[socket.id]}`
+        socket.on('joinRoom', room => {
+            // socket.leave(currentRoom[socket.id]);
+            // socket.join(room);
+            this.leaveRoom(socket);
+            this.joinRoom(socket, room);
         });
     },
     assignTempGuestName(socket){
@@ -85,11 +94,17 @@ const chatServer = {
             this.handleNicknameChangeRequest(socket);
             this.handleChangeRoom(socket);
             this.joinRoom(socket);
+            this.getRooms(socket);
 
             socket.on('message', (data) => {
                 const room = currentRoom[socket.id];
                 socket.to(room).emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
             });
+
+            socket.on('rooms', ()=>{
+                this.getRooms(socket);
+            });
+            
             
             socket.on("disconnecting", () => {
                 this.leaveRoom(socket);
