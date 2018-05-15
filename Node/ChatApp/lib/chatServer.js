@@ -32,10 +32,9 @@ const chatServer = {
     },
     handleChangeRoom(socket){
         socket.on('joinRoom', room => {
-            // socket.leave(currentRoom[socket.id]);
-            // socket.join(room);
             this.leaveRoom(socket);
             this.joinRoom(socket, room);
+            socket.to(room).emit("addMessage", {message: `${nicknames[socket.id]} has joined`});
         });
     },
     assignTempGuestName(socket){

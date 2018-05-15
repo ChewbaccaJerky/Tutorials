@@ -7945,7 +7945,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     window.myChat = myChat;
     window.myChatUI = myChatUI;
     
-    // Add Event Listeners
+// Add Event Listeners
 
     // Listen to when a input is submitted
     const button = document.getElementsByTagName("button")[0];
@@ -7981,7 +7981,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
         myChatUI.addMsg(data.message);
     });
 
-    
     setInterval(()=>{
         socket.emit('rooms');
     }, 1000);
