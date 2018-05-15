@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
 
     socket.on("roomResult", data => {
-        console.log(data.rooms);
         myChatUI.showRooms(data.rooms);
     });
 

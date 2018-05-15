@@ -7816,8 +7816,8 @@ function Chat(socket) {
     this.nickname = "";
 }
 
-Chat.prototype.sendMessage = function(message, room) {
-    this.socket.emit('message', {message: message, room});
+Chat.prototype.sendMessage = function(message) {
+    this.socket.emit('message', {message: message});
 };
 
 Chat.prototype.processCommand = function(command) {
@@ -7869,6 +7869,11 @@ function ChatUI(socket){
     this.room = document.getElementById('room');
 }
 
+
+ChatUI.prototype.clearMsg = function() {
+    this.msgList.innerHTML = "";
+};
+
 ChatUI.prototype.showRooms = function(rooms) {
     this.roomList.innerHTML = "";
     for(let i = 0; i < rooms.length; i++) {
@@ -7885,13 +7890,13 @@ ChatUI.prototype.getInput = function(){
 
 // sendMsg
 ChatUI.prototype.sendMsg = function(){
-    this.chat.sendMessage(this.getInput(), this.room.textContent);
+    this.chat.sendMessage(this.getInput());
 };
 
 // addMsg
 ChatUI.prototype.addMsg = function(msg) {
     const el = document.createElement('li');
-    el.innerText = `${msg}`;
+    el.innerHTML = `<span>${msg}</span>`;
     this.msgList.appendChild(el);
 };
 
@@ -7972,7 +7977,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
 
     socket.on("roomResult", data => {
-        console.log(data.rooms);
         myChatUI.showRooms(data.rooms);
     });
 

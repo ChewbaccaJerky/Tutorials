@@ -8,6 +8,11 @@ function ChatUI(socket){
     this.room = document.getElementById('room');
 }
 
+
+ChatUI.prototype.clearMsg = function() {
+    this.msgList.innerHTML = "";
+};
+
 ChatUI.prototype.showRooms = function(rooms) {
     this.roomList.innerHTML = "";
     for(let i = 0; i < rooms.length; i++) {
@@ -24,13 +29,13 @@ ChatUI.prototype.getInput = function(){
 
 // sendMsg
 ChatUI.prototype.sendMsg = function(){
-    this.chat.sendMessage(this.getInput(), this.room.textContent);
+    this.chat.sendMessage(this.getInput());
 };
 
 // addMsg
 ChatUI.prototype.addMsg = function(msg) {
     const el = document.createElement('li');
-    el.innerText = `${msg}`;
+    el.innerHTML = `<span>${msg}</span>`;
     this.msgList.appendChild(el);
 };
 
