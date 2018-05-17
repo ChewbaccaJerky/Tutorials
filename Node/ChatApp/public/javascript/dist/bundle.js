@@ -7878,7 +7878,7 @@ ChatUI.prototype.showRooms = function(rooms) {
     this.roomList.innerHTML = "";
     for(let i = 0; i < rooms.length; i++) {
         const li = document.createElement("li");
-        li.innerText = rooms[i];
+        li.innerHTML = `<span>${rooms[i]}</span>`;
         this.roomList.appendChild(li);
     }
 };

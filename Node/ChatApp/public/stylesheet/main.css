@@ -7,7 +7,7 @@ html, body {
 main {
     display: flex;
     height: 100vh;
-    background: linear-gradient(90deg, #32CD32, #52D2D7);
+    /* background: #F0F9FC; */
 }
 
 /* main * {
@@ -18,16 +18,38 @@ main {
 .room-list {
     height: 100vh;
     width: 25vw;
-    background-color: rgba(0,0,0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 5px #EEE;
 }
 
 .room-list h3{
     margin: 0;
     text-align: center;
     padding: 1em;
-    background-color: rgba(0,0,0, 0.5);
-    color: #888;
+    color: #EEE;
+    border-bottom: 1px solid #EEE;
 }
+
+#rooms {
+    list-style: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+#rooms li {
+    text-align: center;
+    padding: 1em;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #EEE;
+}
+
+#rooms li span {
+    color: #eee;
+    font-size: 0.8em;
+}
+
 
 
 /* MESSAGE LIST CONTAINER */
@@ -38,10 +60,21 @@ main {
 
 .message-list #messages {
     height: 85%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
 }
 
 #messages li {
-    
+    margin: 1em;
+}
+
+#messages li span{
+    padding: 1em;
+    box-shadow: 1px 1px 10px 3px #DDD;
+    font-size: 0.75em;
+    border-radius: 1em;
 }
 
 .message-list form {
@@ -49,6 +82,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 5px -5px 5px #EEE;
 
 }
 
