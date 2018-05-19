@@ -2,6 +2,7 @@ const Chat = require("./chat");
 
 function ChatUI(socket){
     this.chat = new Chat(socket);
+    // this.input = document.getElementsByTagName('textarea')[0];
     this.input = document.getElementsByTagName('input')[0];
     this.msgList = document.getElementById('messages');
     this.roomList = document.getElementById('rooms');
@@ -33,9 +34,16 @@ ChatUI.prototype.sendMsg = function(){
 };
 
 // addMsg
-ChatUI.prototype.addMsg = function(msg) {
+ChatUI.prototype.addMsg = function(msg, from) {
     const el = document.createElement('li');
-    el.innerHTML = `<span>${msg}</span>`;
+    if(from) {
+        el.innerHTML = `<span>${from}: ${msg}</span>`;
+        el.className = "from";
+    }
+    else {
+        el.innerHTML = `<span>${msg}</span>`;
+    }
+    
     this.msgList.appendChild(el);
 };
 

@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
     overflow: hidden;
+    font-family: 'Roboto', sans-serif;
 }
 
 /* MAIN CONTAINER */
@@ -18,7 +19,7 @@ main {
 .room-list {
     height: 100vh;
     width: 25vw;
-    background-color: rgba(0, 0, 0, 0.5);
+    /* background-color: rgba(0, 0, 0, 0.5); */
     box-shadow: 5px 5px 5px #EEE;
 }
 
@@ -26,7 +27,7 @@ main {
     margin: 0;
     text-align: center;
     padding: 1em;
-    color: #EEE;
+    color: #BBB;
     border-bottom: 1px solid #EEE;
 }
 
@@ -46,8 +47,9 @@ main {
 }
 
 #rooms li span {
-    color: #eee;
-    font-size: 0.8em;
+    color: #BBB;
+    font-size: 1em;
+    font-weight: bold;
 }
 
 
@@ -72,9 +74,18 @@ main {
 
 #messages li span{
     padding: 1em;
-    box-shadow: 1px 1px 10px 3px #DDD;
+    box-shadow: 1px 1px 10px 1px #EEE;
     font-size: 0.75em;
-    border-radius: 1em;
+    border-radius: 2em;
+    border-bottom-left-radius: 0;
+}
+
+#messages .from span {
+    background-color: #6840A9;
+    color: #FFF;
+    float: right;
+    border-radius: 2em;
+    border-bottom-right-radius: 0;
 }
 
 .message-list form {
@@ -83,15 +94,32 @@ main {
     justify-content: center;
     align-items: center;
     box-shadow: 5px -5px 5px #EEE;
-
 }
 
 .message-list form input {
     width: 75%;
     height: 50%;
+    border: none;
+    font-size: 0.75em;
+}
+
+.message-list form input:focus {
+    outline: none;
 }
 
 .message-list form button {
     width: 10%;
     height: 50%;
+    padding: 1em;
+    background-color: #6840A9;
+    border-radius: 1em;
+}
+
+.message-list form button i{
+    font-size: 1em;
+    color: #fff;
+}
+
+.message-list form * {
+    /* border: 1px solid black; */
 }

@@ -97,7 +97,7 @@ const chatServer = {
 
             socket.on('message', (data) => {
                 const room = currentRoom[socket.id];
-                socket.to(room).emit('addMessage', {message: `${nicknames[socket.id]}: ${data.message}`});
+                socket.to(room).emit('addMessage', { message: data.message, from: nicknames[socket.id]});
             });
 
             socket.on('rooms', ()=>{

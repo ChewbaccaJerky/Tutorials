@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     // Listen when message is sent back
     socket.on("addMessage", data=>{
-        myChatUI.addMsg(data.message);
+        myChatUI.addMsg(data.message, data.from);
     });
 
     setInterval(()=>{
