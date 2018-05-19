@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
     });
 
-    socket.on("roomResult", data => {
-        myChatUI.showRooms(data.rooms);
+    socket.on("roomResult", ({rooms, currentRoom}) => {
+        myChatUI.showRooms(rooms, currentRoom);
     });
 
     // Listen when message is sent back

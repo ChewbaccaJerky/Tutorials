@@ -18,7 +18,7 @@ const chatServer = {
 
         const roomNames = Object.keys(rooms);
 
-        socket.emit("roomResult", { rooms: roomNames });
+        socket.emit("roomResult", { rooms: roomNames, currentRoom: currentRoom[socket.id] });
     },
     joinRoom(socket, room="Lobby"){
         socket.join(room);

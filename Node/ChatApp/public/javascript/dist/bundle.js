@@ -7875,11 +7875,14 @@ ChatUI.prototype.clearMsg = function() {
     this.msgList.innerHTML = "";
 };
 
-ChatUI.prototype.showRooms = function(rooms) {
+ChatUI.prototype.showRooms = function(rooms, currentRoom) {
     this.roomList.innerHTML = "";
     for(let i = 0; i < rooms.length; i++) {
         const li = document.createElement("li");
         li.innerHTML = `<span>${rooms[i]}</span>`;
+        if(rooms[i] === currentRoom) {
+            li.className = "active";
+        }
         this.roomList.appendChild(li);
     }
 };
@@ -7984,8 +7987,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
     });
 
-    socket.on("roomResult", data => {
-        myChatUI.showRooms(data.rooms);
+    socket.on("roomResult", ({rooms, currentRoom}) => {
+        myChatUI.showRooms(rooms, currentRoom);
     });
 
     // Listen when message is sent back
