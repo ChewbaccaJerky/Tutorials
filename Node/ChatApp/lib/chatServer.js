@@ -9,10 +9,23 @@ let namesUsed = [];
 
 
 const chatServer = {
+    getUsersInRooms(socket, roomName = currentRoom[socket.id]){
+        const names = {};
+        
+        // get socket.ids that are in the same room
+        for(let id in currentRoom) {
+            if(currentRoom[id] === roomName) {
+                names[nicknames[id]] = id;
+            }
+        }
+        // get nicknames
+        socket.emit("usersResult", names);
+        socket.to(roomName).emit("usersResult", names);
+    },
     getRooms(socket){
         const rooms = {};
 
-        for (let room in currentRoom) {
+        for(let room in currentRoom) {
             rooms[currentRoom[room]] = 1;
         }
 
@@ -32,9 +45,12 @@ const chatServer = {
     },
     handleChangeRoom(socket){
         socket.on('joinRoom', room => {
+            const prevRoom = currentRoom[socket.id];
             this.leaveRoom(socket);
             this.joinRoom(socket, room);
             socket.to(room).emit("addMessage", {message: `${nicknames[socket.id]} has joined`});
+            this.getUsersInRooms(socket, prevRoom);
+            this.getUsersInRooms(socket);
         });
     },
     assignTempGuestName(socket){
@@ -75,6 +91,7 @@ const chatServer = {
                             name,
                             prevName
                         });
+                    this.getUsersInRooms(socket);
                 }
             }
         });
@@ -94,6 +111,7 @@ const chatServer = {
             this.handleChangeRoom(socket);
             this.joinRoom(socket);
             this.getRooms(socket);
+            this.getUsersInRooms(socket);
 
             socket.on('message', (data) => {
                 const room = currentRoom[socket.id];

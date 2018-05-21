@@ -16,14 +16,15 @@ main {
 } */
 
 /* ROOMS LIST CONTAINER*/
-.room-list {
-    height: 100vh;
+.room-list, .user-list {
+    height: 50vh;
     width: 25vw;
     /* background-color: rgba(0, 0, 0, 0.5); */
     box-shadow: 5px 5px 5px #EEE;
 }
 
-.room-list h3{
+.room-list h3, .user-list h3{
+    font-size: 1em;
     margin: 0;
     text-align: center;
     padding: 1em;
@@ -31,7 +32,7 @@ main {
     border-bottom: 1px solid #EEE;
 }
 
-#rooms {
+#rooms, #users {
     list-style: none;
     height: 100%;
     margin: 0;
@@ -39,13 +40,14 @@ main {
     overflow-x: hidden;
 }
 
-#rooms li {
+#rooms li, #users li {
     text-align: center;
     padding: 1em;
     border-bottom: 1px solid #EEE;
+    color: #888;
 }
 
-#rooms li span {
+#rooms li span, #users li span {
     font-size: 1em;
     font-weight: bold;
 }
@@ -60,7 +62,7 @@ main {
 }
 
 #rooms li span {
-    color: #888;
+    
 }
 
 

@@ -27,7 +27,6 @@ Chat.prototype.processCommand = function(command) {
         case "join":
             words.shift();
             this.socket.emit("joinRoom", words.join(" "));
-            // emit which room to join
             break;
         default:
             msg = "Unrecognized command!";

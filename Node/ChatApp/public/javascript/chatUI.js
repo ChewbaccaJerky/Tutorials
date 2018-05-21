@@ -6,12 +6,22 @@ function ChatUI(socket){
     this.input = document.getElementsByTagName('input')[0];
     this.msgList = document.getElementById('messages');
     this.roomList = document.getElementById('rooms');
+    this.userList = document.getElementById('users');
     this.room = document.getElementById('room');
 }
 
 
 ChatUI.prototype.clearMsg = function() {
     this.msgList.innerHTML = "";
+};
+
+ChatUI.prototype.showUsers = function(users) {
+    this.userList.innerHTML = "";
+    for(let name in users) {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${name}</span>`;
+        this.userList.appendChild(li);
+    }
 };
 
 ChatUI.prototype.showRooms = function(rooms, currentRoom) {
@@ -48,6 +58,7 @@ ChatUI.prototype.addMsg = function(msg, from) {
     }
     
     this.msgList.appendChild(el);
+    el.scrollIntoView(false);
 };
 
 // processUserInput
