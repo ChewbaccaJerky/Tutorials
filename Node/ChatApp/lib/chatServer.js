@@ -51,6 +51,7 @@ const chatServer = {
             socket.to(room).emit("addMessage", {message: `${nicknames[socket.id]} has joined`});
             this.getUsersInRooms(socket, prevRoom);
             this.getUsersInRooms(socket);
+            socket.emit('clear');
         });
     },
     assignTempGuestName(socket){

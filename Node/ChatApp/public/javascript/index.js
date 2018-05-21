@@ -50,6 +50,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
         myChatUI.showUsers(users);
     });
 
+    socket.on("clear", ()=>{
+        myChatUI.clearMsgList();
+    });
+
     // Listen when message is sent back
     socket.on("addMessage", data=>{
         myChatUI.addMsg(data.message, data.from);

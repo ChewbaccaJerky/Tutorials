@@ -11,7 +11,7 @@ function ChatUI(socket){
 }
 
 
-ChatUI.prototype.clearMsg = function() {
+ChatUI.prototype.clearMsgList = function() {
     this.msgList.innerHTML = "";
 };
 
@@ -20,6 +20,7 @@ ChatUI.prototype.showUsers = function(users) {
     for(let name in users) {
         const li = document.createElement('li');
         li.innerHTML = `<span>${name}</span>`;
+        li.setAttribute('data-id', users[name]);
         this.userList.appendChild(li);
     }
 };
