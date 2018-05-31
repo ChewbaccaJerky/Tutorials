@@ -1,0 +1,11 @@
+extends layout.pug
+
+
+block content
+    form(method="POST" action="/blog/update?_method=PUT")
+        h3 Update Blog
+        input(type="hidden" value=blog.id name="id")
+        input(type="text" value=blog.author name='author')
+        input(type="text" value=blog.title name='title')
+        input(type="text" value=blog.body name='body')
+        input(type="submit" value="UPDATE")

@@ -12,9 +12,14 @@ const config = function(app, express) {
     app.use(morgan('combined'));
     // method override
     app.use(methodOverride('_method'));
+    // // override with different headers; last one takes precedence
+    // app.use(methodOverride('X-HTTP-Method'));          // Microsoft
+    // app.use(methodOverride('X-HTTP-Method-Override')); // Google/GData
+    // app.use(methodOverride('X-Method-Override'));      // IBM
     // accessibility for static files
     app.use(express.static('public'));
 
+// HTML template engine setup
     // set engine
     app.set('views', 'views');
     app.set('view engine', 'pug');

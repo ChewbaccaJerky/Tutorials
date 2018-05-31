@@ -3,3 +3,8 @@ div.card
     h1= blog.title
     h3= blog.author
     p= blog.body
+    form(method="POST" action="/blog/delete?_method=DELETE")
+        input(type="hidden" name="id" value=blog.id)
+        input(type="submit" value="DELETE")
+    - var link = "./blog/" + blog.id + "/edit"
+    a(href=link) EDIT
