@@ -1,0 +1,10 @@
+extends layout.pug
+
+
+block content
+    form(method="POST" action="/blog/create")
+        h3 Write Your Blog Here
+        input(type="text" placeholder='author' name='author')
+        input(type="text" placeholder='title' name='title')
+        input(type="text" placeholder='write something...' name='body')
+        input(type="submit" value="POST")

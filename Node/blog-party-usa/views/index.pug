@@ -2,9 +2,5 @@ extends layout.pug
 
 block content
     
-    - var blogs = blogArray
     each blog in blogs
-        div.card
-            h1= blog.title
-            h3= blog.author
-            p= blog.body
+        include includes/card.pug
