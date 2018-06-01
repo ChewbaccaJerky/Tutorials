@@ -1,15 +1,11 @@
 // environmental variables
 require('dotenv').config();
-
+// imports
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
-// internal import
 const config = require('./config/config.js');
-const RootController = require('./controller/rootController.js');
-const Blog = require('./model/blog.js');
-const seedDB = require('./seeds/seed.js');
 
 // database setup
 mongoose.connect(process.env.DB_URL);
@@ -19,18 +15,8 @@ db.once('open', function () {
     console.log('connected to Database');
 });
 
-// seed database if blogs are empty
-Blog.find({}, (err, doc) => {
-    if(doc.length === 0) {
-        seedDB();
-    }
-});
-
 // set config
 config(app, express);
-
-// Set Controllers and Routes
-RootController(app);
 
 const PORT = process.env.PORT;
 app.listen(PORT, function(){

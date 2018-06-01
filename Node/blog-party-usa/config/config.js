@@ -3,6 +3,9 @@ const pug = require('pug');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
+const index = require("../routes/index.js");
+const blogs = require('../routes/blog.js');
+
 const config = function(app, express) {
 // middlewares
     // form parsing
@@ -18,6 +21,10 @@ const config = function(app, express) {
     // app.use(methodOverride('X-Method-Override'));      // IBM
     // accessibility for static files
     app.use(express.static('public'));
+
+    // routes
+    app.use('/', index);
+    app.use('/blog', blogs);
 
 // HTML template engine setup
     // set engine
