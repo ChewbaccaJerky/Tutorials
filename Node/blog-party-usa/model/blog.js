@@ -5,8 +5,8 @@ const blogSchema = new Schema({
         author: String,
         title: String,
         body: String,
-        createdAt: Date,
-        updatedAt: Date
+}, {
+        timestamps: true
 });
 
 const Blog = mongoose.model('Blog', blogSchema);
