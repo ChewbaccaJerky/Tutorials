@@ -11,12 +11,11 @@ const config = require('./config/config.js');
 const createRoutes = require('./routes/root.js');
 
 // database setup
-console.log(process.env.DB_URL);
 mongoose.connect(process.env.DB_URL);
 const db = mongoose.connection;
 db.on('error', (err) => { console.error(err); });
 db.once('open', function () {
-    console.log('it works!');
+console.log('connected to Database');
 });
 
 // set config
