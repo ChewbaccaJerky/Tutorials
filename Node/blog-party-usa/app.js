@@ -7,7 +7,7 @@ const app = express();
 
 // internal import
 const config = require('./config/config.js');
-const createRoutes = require('./routes/root.js');
+const RootController = require('./controller/rootController.js');
 const Blog = require('./model/blog.js');
 const seedDB = require('./seeds/seed.js');
 
@@ -29,8 +29,8 @@ Blog.find({}, (err, doc) => {
 // set config
 config(app, express);
 
-//create routes
-createRoutes(app);
+// Set Controllers and Routes
+RootController(app);
 
 const PORT = process.env.PORT;
 app.listen(PORT, function(){
