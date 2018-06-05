@@ -10,7 +10,7 @@ let blogArray = JSON.parse(blogFile);
 
 exports.blog_list = (req, res) => {
     Blog.find((err, blogs) => {
-        res.render('index', { blogs: blogs });
+        res.render('./blog/index', { blogs: blogs });
     });
 };
 
@@ -24,7 +24,7 @@ exports.blog_detail = (req, res) => {
 };
 
 exports.blog_create_get = (req, res) => {
-    res.render("create");
+    res.render("./form/create");
 };
 
 exports.blog_create_post = (req, res) => {
@@ -38,7 +38,7 @@ exports.blog_create_post = (req, res) => {
 exports.blog_edit_get = (req, res) => {
     Blog.findOne({ _id: req.params.id }, (err, blog) => {
         if (blog) {
-            res.render("edit", { blog: blog });
+            res.render("./form/edit", { blog: blog });
         }
         else {
             res.redirect('/');
