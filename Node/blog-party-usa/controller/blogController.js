@@ -10,7 +10,7 @@ let blogArray = JSON.parse(blogFile);
 
 exports.blog_list = (req, res) => {
     Blog.find((err, blogs) => {
-        res.render('./blog/index', { blogs: blogs });
+        res.render('./blog/index', { blogs: blogs, user: req.user });
     });
 };
 

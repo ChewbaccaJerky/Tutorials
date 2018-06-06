@@ -1,6 +1,10 @@
 extends ../layout.pug
 
 block content
+    if user
+        h1= "Welcome " + user.username
+    else
+        h1 Hello
     a(href="/blog/create") New Blog
     each blog in blogs
         include ../includes/card.pug
