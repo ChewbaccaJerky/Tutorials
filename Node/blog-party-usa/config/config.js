@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const passport = require('passport');
 const session = require('express-session');
+const cookieSession = require('cookie-session');
 
 const index = require("../routes/index.js");
 const blogs = require('../routes/blog.js');
@@ -34,18 +35,18 @@ const config = function(app, express) {
     app.set('views', 'views');
     app.set('view engine', 'pug');
 
+
+
+// Configure cookies
+    app.use(cookieSession({
+        maxAge: 24 * 60 * 60 * 1000,
+        keys: [process.env.COOKIE_KEY]
+    }));
+
 // Configuring Passport
     passportSetup();
-
-    // passport.serializeUser(((user, done)=>{
-    //     done(null, user._id);
-    // }));
-
-    // passport.deserializeUser((id, done)=>{
-    //     User.findById(id, (err, user)=>{
-    //         done(err, user);
-    //     });
-    // });
+    app.use(passport.initialize());
+    app.use(passport.session());
 };
 
 module.exports = config;
