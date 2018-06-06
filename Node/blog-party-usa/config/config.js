@@ -26,6 +26,20 @@ const config = function(app, express) {
     // // override with different headers; last one takes precedence
     // accessibility for static files
     app.use(express.static('public'));
+
+// Configure Passport
+    passportSetup();
+
+// Configure cookies
+    app.use(cookieSession({
+        maxAge: 24 * 60 * 60 * 1000, // hour * minutes * seconds * miliseconds
+        keys: [process.env.COOKIE_KEY]
+    }));
+
+// Initialize Passport
+    app.use(passport.initialize());
+    app.use(passport.session());
+
 // routes
     app.use('/', index);
     app.use('/auth', auth);
@@ -34,19 +48,7 @@ const config = function(app, express) {
     // set engine
     app.set('views', 'views');
     app.set('view engine', 'pug');
-
-
-
-// Configure cookies
-    app.use(cookieSession({
-        maxAge: 24 * 60 * 60 * 1000,
-        keys: [process.env.COOKIE_KEY]
-    }));
-
-// Configuring Passport
-    passportSetup();
-    app.use(passport.initialize());
-    app.use(passport.session());
+    
 };
 
 module.exports = config;

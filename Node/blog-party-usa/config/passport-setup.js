@@ -2,8 +2,8 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const User = require('../model/user');
 
-const passportSetup = () => { 
-  
+const passportSetup = (app) => { 
+
   // setup cookie
   passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -14,8 +14,9 @@ const passportSetup = () => {
     User.findById(id).then(user => {
       done(null, user);
     });
-    
   });
+
+
 
   passport.use(
     new GoogleStrategy({
