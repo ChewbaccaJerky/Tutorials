@@ -30,7 +30,6 @@ const passportSetup = (app) => {
       // Check if user exists in db
       User.findOne({googleId: profile.id}, (err, user)=>{
         if(user) {
-          // console.log(user);
           done(null, user);
         }
         else {

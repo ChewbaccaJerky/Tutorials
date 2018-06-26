@@ -44,6 +44,7 @@ const config = function(app, express) {
     app.use('/', index);
     app.use('/auth', auth);
     app.use('/blog', blogs);
+    
 // HTML template engine setup
     // set engine
     app.set('views', 'views');
