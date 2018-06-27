@@ -6,3 +6,15 @@ html, body {
 line {
   stroke: red;
 }
+
+.group-0 path,
+.group-0 circle {
+  fill: red;
+  stroke: blue;
+}
+
+.group-1 path,
+.group-1 circle {
+  fill: green;
+  stroke: white;
+}

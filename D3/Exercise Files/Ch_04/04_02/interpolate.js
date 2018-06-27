@@ -7,26 +7,44 @@ const dataArray = [
     {x: 25, y: 5}
 ];
 
+const interpolateType = [
+    d3.curveLinear, 
+    d3.curveNatural,
+    d3.curveStep, 
+    d3.curveBasis, 
+    d3.curveBundle
+];
+
 const svg = d3.select("body")
-                .append("svg")
-                    .attr("height", "100%")
-                    .attr("width", "100%");
+    .append("svg")
+    .attr("height", "100%")
+    .attr("width", "100%");
 
-const line = d3.line()
-                 .x(function(d, i){ return d.x*6; })
-                 .y(function(d, i){ return d.y*4; })
-                 .curve(d3.curveCardinal);
 
-const chartGroup = svg.append("g").attr("transform", "translate(0, 0)");
+for(let i = 0; i < interpolateType.length; i++) {
+    let shiftX = i*250,
+        shiftY = 0;
 
-chartGroup.append("path")
-     .attr("fill", "none")
-     .attr("stroke", "blue")
-     .attr("d", line(dataArray));
+    const line = d3.line()
+        .x(function (d, i) { return d.x * 6; })
+        .y(function (d, i) { return d.y * 4; })
+        .curve(interpolateType[i]);
 
-chartGroup.selectAll("circle")
+    const chartGroup = svg.append("g")
+                            .attr("class", "group-" + i)
+                            .attr("transform", `translate(${shiftX}, ${shiftY})`);
+
+    chartGroup.append("path")
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("d", line(dataArray));
+        // .on("click", translate);
+
+    chartGroup.selectAll("circle.grp" + i)
         .data(dataArray)
         .enter().append("circle")
-                    .attr("cx",function(d, i){ return d.x*6; })
-                    .attr("cy",function(d, i){ return d.y*4; })
-                    .attr("r","2");
+        .attr("class", function(d, i) { return "grp" + i})
+        .attr("cx", function (d, i) { return d.x * 6; })
+        .attr("cy", function (d, i) { return d.y * 4; })
+        .attr("r", "2");
+}
