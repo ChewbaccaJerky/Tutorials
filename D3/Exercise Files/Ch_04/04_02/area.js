@@ -10,8 +10,6 @@ for(let i = 0; i < 50; i++) {
     dataYears.push((2000 + i).toString());
 }
 
-console.log(dataYears);
-
 // generator
 const area = d3.area()
                  .x(function(d, i){ return i * 20; })
